@@ -66,8 +66,7 @@ WHERE
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 ```
 
-### 1. Import the dataset and do usual exploratory analysis steps like checking the
-structure & characteristics of the dataset:
+### 1. Import the dataset and do usual exploratory analysis steps like checking the structure & characteristics of the dataset:
 
 The following SQL queries were developed to answer specific business questions:
 
