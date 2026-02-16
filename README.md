@@ -21,6 +21,96 @@ I used BigQuery also because there you don’t need to create the table structur
 I have used a total of 8 tables in my project:
 customers, geolocation, order_items, order_reviews, orders, payments, products, and sellers.
 
+---
+
+### **Customers Table**
+
+* customer_id
+* customer_unique_id
+* customer_zip_code_prefix
+* customer_city
+* customer_state
+
+---
+
+### **Geolocation Table**
+
+* geolocation_zip_code_prefix
+* geolocation_lat
+* geolocation_lng
+* geolocation_city
+* geolocation_state
+
+---
+
+### **Order_Items Table**
+
+* order_id
+* order_item_id
+* product_id
+* seller_id
+* shipping_limit_date
+* price
+* freight_value
+
+---
+
+### **Order_Reviews Table**
+
+* review_id
+* review_score
+* order_id
+* review_comment_title
+* review_creation_date
+* review_answer_timestamp
+
+---
+
+### **Orders Table**
+
+* order_id
+* customer_id
+* order_status
+* order_purchase_timestamp
+* order_delivered_carrier_date
+* order_delivered_customer_date
+* order_estimated_delivery_date
+
+---
+
+### **Payments Table**
+
+* order_id
+* payment_sequential
+* payment_type
+* payment_installments
+* payment_value
+
+---
+
+### **Products Table**
+
+* product_id
+* product_category
+* product_name_length
+* product_description_length
+* product_photos_qty
+* product_weight_g
+* product_length_cm
+* product_height_cm
+* product_width_cm
+
+---
+
+### **Sellers Table**
+
+* seller_id
+* seller_zip_code_prefix
+* seller_city
+* seller_state
+
+---
+
 1️⃣ Customers Table
 Columns:
 
