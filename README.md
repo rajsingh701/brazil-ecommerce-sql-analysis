@@ -23,7 +23,10 @@ customers, geolocation, order_items, order_reviews, orders, payments, products, 
 
 1️⃣ Customers Table
 Columns:
+
 customer_id, customer_unique_id, customer_zip_code_prefix, customer_city, customer_state
+
+
 2️⃣ Geolocation Table
 Columns:
 geolocation_zip_code_prefix, geolocation_lat, geolocation_lng, geolocation_city, geolocation_state
