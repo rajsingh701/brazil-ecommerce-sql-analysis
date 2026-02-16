@@ -1,10 +1,10 @@
-# Retail Sales Analysis SQL Project
+# Brazil E-commerce SQL Analysis
 
 ## Project Overview
 
-**Project Title**: Retail Sales Analysis  
+**Project Title**: Brazil E-commerce Analysis  
 **Level**: Beginner  
-**Database**: `p1_retail_db`
+**Database**: `TARGET_SQL`
 
 This project is designed to demonstrate SQL skills and techniques typically used by data analysts to explore, clean, and analyze retail sales data. The project involves setting up a retail sales database, performing exploratory data analysis (EDA), and answering specific business questions through SQL queries. This project is ideal for those who are starting their journey in data analysis and want to build a solid foundation in SQL.
 
@@ -66,7 +66,8 @@ WHERE
     quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
 ```
 
-### 3. Data Analysis & Findings
+### 1. Import the dataset and do usual exploratory analysis steps like checking the
+structure & characteristics of the dataset:
 
 The following SQL queries were developed to answer specific business questions:
 
