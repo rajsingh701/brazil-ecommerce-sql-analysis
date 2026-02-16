@@ -6,21 +6,47 @@
 **Level**: Beginner  
 **Database**: `TARGET_SQL`
 
-This project is designed to demonstrate SQL skills and techniques typically used by data analysts to explore, clean, and analyze retail sales data. The project involves setting up a retail sales database, performing exploratory data analysis (EDA), and answering specific business questions through SQL queries. This project is ideal for those who are starting their journey in data analysis and want to build a solid foundation in SQL.
+SQL-based E-Commerce Sales & Operations Analysis project focused on revenue growth, customer distribution, payment behavior, freight costs, and delivery performance. This project uses advanced SQL concepts including joins, CTEs, window functions, and date analysis to generate real business insights.
 
-## Objectives
+## Tool used 
+I used BigQuery because it is a serverless, cloud-based analytical database optimized for large-scale data processing and high-performance aggregation queries.
 
-1. **Set up a retail sales database**: Create and populate a retail sales database with the provided sales data.
-2. **Data Cleaning**: Identify and remove any records with missing or null values.
-3. **Exploratory Data Analysis (EDA)**: Perform basic exploratory data analysis to understand the dataset.
-4. **Business Analysis**: Use SQL to answer specific business questions and derive insights from the sales data.
+## Advantage of using BigQuery:
+I used BigQuery also because there you don’t need to create the table structure manually. You can simply click on the three dots on the database, select the upload option, and easily use the table data. But in MySQL and other databases, you have to create the table schema manually and then insert the data. This is the main advantage of using BigQuery over others.
 
 ## Project Structure
 
-### 1. Database Setup
+### 1. Description of tables 
 
-- **Database Creation**: The project starts by creating a database named `p1_retail_db`.
-- **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
+I have used a total of 8 tables in my project:
+customers, geolocation, order_items, order_reviews, orders, payments, products, and sellers.
+
+1️⃣ Customers Table
+Columns:
+customer_id, customer_unique_id, customer_zip_code_prefix, customer_city, customer_state
+2️⃣ Geolocation Table
+Columns:
+geolocation_zip_code_prefix, geolocation_lat, geolocation_lng, geolocation_city, geolocation_state
+3️⃣ Order_Items Table
+Columns:
+order_id, order_item_id, product_id, seller_id, shipping_limit_date, price, freight_value
+4️⃣ Order_Reviews Table
+Columns:
+review_id, review_score, order_id, review_comment_title, review_creation_date, review_answer_timestamp
+5️⃣ Orders Table
+Columns:
+order_id, customer_id, order_status, order_purchase_timestamp, order_delivered_carrier_date, order_delivered_customer_date, order_estimated_delivery_date
+6️⃣ Payments Table
+Columns:
+order_id, payment_sequential, payment_type, payment_installments, payment_value
+7️⃣ Products Table
+Columns:
+product_id, product_category, product_name_length, product_description_length, product_photos_qty, product_weight_g, product_length_cm, product_height_cm, product_width_cm
+8️⃣ Sellers Table
+Columns:
+seller_id, seller_zip_code_prefix, seller_city, seller_state
+Final Professional Statement:
+“We are going to build the project by using data from all these tables. By joining these tables using common keys like order_id, customer_id, product_id, and seller_id, we can perform detailed analysis such as sales trends, customer behavior, delivery performance, payment analysis, and product performance.”
 
 ```sql
 CREATE DATABASE p1_retail_db;
@@ -70,11 +96,12 @@ WHERE
 
 The following SQL queries were developed to answer specific business questions:
 
-1. **Write a SQL query to retrieve all columns for sales made on '2022-11-05**:
+1. **2. Get the time range between which the orders were placed.**:
 ```sql
-SELECT *
-FROM retail_sales
-WHERE sale_date = '2022-11-05';
+select 
+min(order_purchase_timestamp) as start_time,
+max(order_purchase_timestamp) as end_time
+from `TARGET_SQL.orders`;
 ```
 
 2. **Write a SQL query to retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 4 in the month of Nov-2022**:
