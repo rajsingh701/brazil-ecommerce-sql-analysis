@@ -111,7 +111,7 @@ customers, geolocation, order_items, order_reviews, orders, payments, products, 
 
 ---
 
-“We are going to build the project by using data from all these tables. By joining these tables using common keys like order_id, customer_id, product_id, and seller_id, we can perform detailed analysis such as sales trends, customer behavior, delivery performance, payment analysis, and product performance.”
+We are going to build the project by using data from all these tables. By joining these tables using common keys like order_id, customer_id, product_id, and seller_id, we can perform detailed analysis such as sales trends, customer behavior, delivery performance, payment analysis, and product performance.
 
 
 ### 1. Import the dataset and do usual exploratory analysis steps like checking the structure & characteristics of the dataset:
@@ -157,12 +157,17 @@ group by extract(month from order_purchase_timestamp)
 order by order_num desc;
 ```
 
-3. **During what time of the day, do the Brazilian customers mostly place
--- their orders? (Dawn, Morning, Afternoon or Night)
--- ■ 0-6 hrs : Dawn
--- ■ 7-12 hrs : Mornings
--- ■ 13-18 hrs : Afternoon
--- ■ 19-23 hrs : Night**:
+3. **During what time of the day, do the Brazilian customers mostly place**
+   
+**-- their orders? (Dawn, Morning, Afternoon or Night)**
+
+**-- ■ 0-6 hrs : Dawn**
+
+**-- ■ 7-12 hrs : Mornings**
+
+**-- ■ 13-18 hrs : Afternoon**
+
+**-- ■ 19-23 hrs : Night**:
 ```sql
 select 
 extract(hour from order_purchase_timestamp) as time,
@@ -210,10 +215,10 @@ order by num_customers desc;
 
 
 ### 4. Impact on Economy: Analyze the money movement by e-commerce by looking at order prices, freight and others:
-1. **Get the % increase in the cost of orders from year 2017 to 2018
--- (include months between Jan to Aug only).
--- You can use the "payment_value" column in the payments table to get
--- the cost of orders.**:
+1. **Get the % increase in the cost of orders from year 2017 to 2018 (include months between Jan to Aug only).**
+   
+**-- You can use the "payment_value" column in the payments table to get the cost of orders.**:
+   
 --step 1: Calculate total payments per year
 ```sql
 with yearly_totals as (
@@ -273,6 +278,187 @@ join `TARGET_SQL.order_items` as oi
 on o.order_id = oi.order_id
 group by state
 order by total_freight, avg_freight desc;
+```
+
+### 5. Analysis based on sales, freight and delivery time.:
+1. **Find the no. of days taken to deliver each order from the order’s purchase date as delivery time.**
+2. 
+**-- Also, calculate the difference (in days) between the estimated & actual delivery date of an order.**
+   
+**--Do this in a single query.**
+-- You can calculate the delivery time and the difference between the
+-- estimated & actual delivery date using the given formula:
+-- ■ time_to_deliver = order_delivered_customer_date -
+-- order_purchase_timestamp
+-- ■ diff_estimated_delivery = order_delivered_customer_date -
+-- order_estimated_delivery_date**:
+```sql
+select order_id,
+date_diff(date(order_delivered_customer_date), date(order_purchase_timestamp), day) as days_to_delivery,
+date_diff(date(order_delivered_customer_date), date(order_estimated_delivery_date), day) as diff_estimated_delivery
+from `TARGET_SQL.orders`;
+```
+
+2. **Find out the top 5 states with the average freight value.**:
+```sql
+select 
+c.customer_state as state,
+round(avg(oi.freight_value), 2) as avg_value
+from `TARGET_SQL.customers` as c
+join `TARGET_SQL.orders` as o
+on c.customer_id = o.customer_id
+join `TARGET_SQL.order_items` as oi 
+on o.order_id = oi.order_id
+group by state
+order by avg_value desc
+limit 5;
+```
+
+3. **Find out the top 5 states with the highest & lowest average freight value.**:
+```sql
+with state_freight_value as (
+select 
+c.customer_state as state,
+round(avg(oi.freight_value), 2) as avg_value
+from `TARGET_SQL.customers` as c
+join `TARGET_SQL.orders` as o
+on c.customer_id = o.customer_id
+join `TARGET_SQL.order_items` as oi 
+on o.order_id = oi.order_id
+group by state
+)
+
+(select 
+state,
+avg_value
+from state_freight_value
+order by avg_value desc
+limit 5)
+UNION ALL
+(select
+state, 
+avg_value 
+from state_freight_value
+order by avg_value asc
+limit 5);
+```
+
+4. **Find out the top 5 states with average delivery time.**:
+```sql
+select 
+c.customer_state as state,
+avg(extract(date from o.order_delivered_customer_date)- extract(date from o.order_purchase_timestamp)) as avg_time_to_delivery
+from `TARGET_SQL.customers` as c
+join `TARGET_SQL.orders` as o
+on c.customer_id = o.customer_id
+group by state
+order by avg_time_to_delivery desc
+limit 5;
+```
+
+-- Another Query:
+```sql
+select 
+c.customer_state as state,
+avg(date_diff(date(order_delivered_customer_date), date(order_purchase_timestamp), day)) as avg_time_to_delivery
+from `TARGET_SQL.customers` as c
+join `TARGET_SQL.orders` as o
+on c.customer_id = o.customer_id
+group by state
+order by avg_time_to_delivery desc
+limit 5;
+```
+3. **Find out the top 5 states with the highest & lowest average delivery time.**:
+```sql
+with average_delivery as (
+select 
+c.customer_state as state,
+avg(date_diff(date(o.order_delivered_customer_date), date(o.order_purchase_timestamp), day)) as avg_time_to_delivery 
+from `TARGET_SQL.customers` as c
+join `TARGET_SQL.orders` as o
+on c.customer_id = o.customer_id
+group by state)
+(select 
+state, 
+avg_time_to_delivery
+from average_delivery
+order by avg_time_to_delivery desc
+limit 5)
+union all 
+(select 
+state, 
+avg_time_to_delivery
+from average_delivery 
+order by avg_time_to_delivery asc
+limit 5);
+```
+
+3. **Find out the top 5 states where the order delivery is really fast as
+-- compared to the estimated date of delivery.
+-- You can use the difference between the averages of actual & estimated
+-- delivery date to figure out how fast the delivery was for each state.**:
+```sql
+select 
+c.customer_state as state,
+round(avG(date_diff(date(o.order_delivered_customer_date), date(o.order_estimated_delivery_date), day)), 2) as com_delivery_date
+from `TARGET_SQL.orders`  as o
+join `TARGET_SQL.customers` as c
+on o.customer_id = c.customer_id
+group by state
+order by com_delivery_date asc 
+limit 5;
+```
+-- Another Query:
+```sql
+with fast_delivery as (
+  select c.customer_state as state,
+  date_diff(date(o.order_delivered_customer_date),date(o.order_estimated_delivery_date), day) as delivery_deff
+  from `TARGET_SQL.customers` as c
+  join `TARGET_SQL.orders` as o
+  on c.customer_id = o.customer_id
+)
+select 
+fast_delivery.state,
+round(avg(fast_delivery.delivery_deff), 2) as avg_del
+from fast_delivery 
+group by fast_delivery.state
+order by avg_del asc
+limit 5;
+```
+
+### 6. Analysis based on the payments:
+1. **Find the month on month no. of orders placed using different payment types.**:
+```sql
+select 
+p.payment_type as payment,
+extract(year from o.order_purchase_timestamp) as year,
+extract(month from o.order_purchase_timestamp) as month,
+count(distinct o.order_id) as order_count
+from `TARGET_SQL.orders` as o
+join `TARGET_SQL.payments` as p
+on o.order_id = p.order_id
+group by payment, year, month
+order by payment, year, month;
+```
+
+2. **Find the no. of orders placed on the basis of the payment installments that have been paid.**:
+```sql
+select 
+payment_installments,
+count(distinct order_id) as order_count
+from `TARGET_SQL.payments`
+where payment_installments = 0
+group by payment_installments
+order by order_count;
+```
+
+3. **orders with installments**:
+```sql
+select 
+payment_installments as installment,
+count(distinct order_id) as order_count
+from `TARGET_SQL.payments` 
+group by installment;
 ```
 
 ## Findings
