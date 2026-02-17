@@ -282,8 +282,8 @@ order by total_freight, avg_freight desc;
 -- Also, calculate the difference (in days) between the estimated & actual delivery date of an order.
 -- Do this in a single query.
 -- You can calculate the delivery time and the difference between the estimated & actual delivery date using the given formula:
--- ■ time_to_deliver = order_delivered_customer_date - order_purchase_timestamp
--- ■ diff_estimated_delivery = order_delivered_customer_date - order_estimated_delivery_date**
+   1.time_to_deliver = order_delivered_customer_date - order_purchase_timestamp
+   2.diff_estimated_delivery = order_delivered_customer_date - order_estimated_delivery_date**
 ```sql
 select order_id,
 date_diff(date(order_delivered_customer_date), date(order_purchase_timestamp), day) as days_to_delivery,
