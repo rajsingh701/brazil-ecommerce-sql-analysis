@@ -157,17 +157,12 @@ group by extract(month from order_purchase_timestamp)
 order by order_num desc;
 ```
 
-3. **During what time of the day, do the Brazilian customers mostly place**
-   
-**-- their orders? (Dawn, Morning, Afternoon or Night)**
-
-**-- ■ 0-6 hrs : Dawn**
-
-**-- ■ 7-12 hrs : Mornings**
-
-**-- ■ 13-18 hrs : Afternoon**
-
-**-- ■ 19-23 hrs : Night**:
+3. **During what time of the day, do the Brazilian customers mostly place
+-- their orders? (Dawn, Morning, Afternoon or Night)
+-- ■ 0-6 hrs : Dawn
+-- ■ 7-12 hrs : Mornings
+-- ■ 13-18 hrs : Afternoon
+-- ■ 19-23 hrs : Night**:
 ```sql
 select 
 extract(hour from order_purchase_timestamp) as time,
@@ -215,9 +210,11 @@ order by num_customers desc;
 
 
 ### 4. Impact on Economy: Analyze the money movement by e-commerce by looking at order prices, freight and others:
-1. **Get the % increase in the cost of orders from year 2017 to 2018 (include months between Jan to Aug only).**
-   
-**-- You can use the "payment_value" column in the payments table to get the cost of orders.**:
+1. **Get the % increase in the cost of orders from year 2017 to 2018
+-- (include months between Jan to Aug only).
+-- You can use the "payment_value" column in the payments table to get
+-- the cost of orders.
+--step 1: Calculate total payments per year**:
    
 --step 1: Calculate total payments per year
 ```sql
@@ -281,17 +278,12 @@ order by total_freight, avg_freight desc;
 ```
 
 ### 5. Analysis based on sales, freight and delivery time.:
-1. **Find the no. of days taken to deliver each order from the order’s purchase date as delivery time.**
-2. 
-**-- Also, calculate the difference (in days) between the estimated & actual delivery date of an order.**
-   
-**--Do this in a single query.**
--- You can calculate the delivery time and the difference between the
--- estimated & actual delivery date using the given formula:
--- ■ time_to_deliver = order_delivered_customer_date -
--- order_purchase_timestamp
--- ■ diff_estimated_delivery = order_delivered_customer_date -
--- order_estimated_delivery_date**:
+1. **Find the no. of days taken to deliver each order from the order’s purchase date as delivery time.
+-- Also, calculate the difference (in days) between the estimated & actual delivery date of an order.
+-- Do this in a single query.
+-- You can calculate the delivery time and the difference between the estimated & actual delivery date using the given formula:
+-- ■ time_to_deliver = order_delivered_customer_date - order_purchase_timestamp
+-- ■ diff_estimated_delivery = order_delivered_customer_date - order_estimated_delivery_date**
 ```sql
 select order_id,
 date_diff(date(order_delivered_customer_date), date(order_purchase_timestamp), day) as days_to_delivery,
@@ -368,7 +360,7 @@ group by state
 order by avg_time_to_delivery desc
 limit 5;
 ```
-3. **Find out the top 5 states with the highest & lowest average delivery time.**:
+5. **Find out the top 5 states with the highest & lowest average delivery time.**:
 ```sql
 with average_delivery as (
 select 
@@ -393,7 +385,7 @@ order by avg_time_to_delivery asc
 limit 5);
 ```
 
-3. **Find out the top 5 states where the order delivery is really fast as
+6. **Find out the top 5 states where the order delivery is really fast as
 -- compared to the estimated date of delivery.
 -- You can use the difference between the averages of actual & estimated
 -- delivery date to figure out how fast the delivery was for each state.**:
