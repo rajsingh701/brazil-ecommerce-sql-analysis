@@ -18,8 +18,8 @@ I used BigQuery also because there you don’t need to create the table structur
 
 ### Description of tables 
 
-I have used a total of 8 tables in my project:
-customers, geolocation, order_items, order_reviews, orders, payments, products, and sellers.
+I have used a total of 4 tables in my project:
+customers, order_items, orders, and payments.
 
 ---
 
@@ -33,16 +33,6 @@ customers, geolocation, order_items, order_reviews, orders, payments, products, 
 
 ---
 
-### **2️⃣Geolocation Table**
-
-* geolocation_zip_code_prefix
-* geolocation_lat
-* geolocation_lng
-* geolocation_city
-* geolocation_state
-
----
-
 ### **3️⃣Order_Items Table**
 
 * order_id
@@ -52,17 +42,6 @@ customers, geolocation, order_items, order_reviews, orders, payments, products, 
 * shipping_limit_date
 * price
 * freight_value
-
----
-
-### **4️⃣Order_Reviews Table**
-
-* review_id
-* review_score
-* order_id
-* review_comment_title
-* review_creation_date
-* review_answer_timestamp
 
 ---
 
@@ -85,29 +64,6 @@ customers, geolocation, order_items, order_reviews, orders, payments, products, 
 * payment_type
 * payment_installments
 * payment_value
-
----
-
-### **7️⃣Products Table**
-
-* product_id
-* product_category
-* product_name_length
-* product_description_length
-* product_photos_qty
-* product_weight_g
-* product_length_cm
-* product_height_cm
-* product_width_cm
-
----
-
-### **8️⃣Sellers Table**
-
-* seller_id
-* seller_zip_code_prefix
-* seller_city
-* seller_state
 
 ---
 
