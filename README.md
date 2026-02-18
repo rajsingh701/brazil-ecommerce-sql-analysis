@@ -29,8 +29,11 @@ from `TARGET_SQL.orders`;
 ```
 
 2. **Display the details of Cities & States of customers who ordered during the given period.**:
+   
 **Approach:**
+
 In this query, I joined the orders and customers tables on customer_id and applied year and month filters using the EXTRACT function to retrieve the cities and states of customers who placed orders during the first quarter of 2018.
+
 ```sql
 select 
 c.customer_city, c.customer_state
