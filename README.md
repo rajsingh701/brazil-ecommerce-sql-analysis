@@ -14,61 +14,7 @@ I used BigQuery because it is a serverless, cloud-based analytical database opti
 ## Advantage of using BigQuery:
 I used BigQuery also because there you don’t need to create the table structure manually. You can simply click on the three dots on the database, select the upload option, and easily use the table data. But in MySQL and other databases, you have to create the table schema manually and then insert the data. This is the main advantage of using BigQuery over others.
 
-## Project Structure
-
-### Description of tables 
-
-I have used a total of 4 tables in my project:
-customers, order_items, orders, and payments.
-
----
-
-### **1️⃣Customers Table**
-
-* customer_id
-* customer_unique_id
-* customer_zip_code_prefix
-* customer_city
-* customer_state
-
----
-
-### **3️⃣Order_Items Table**
-
-* order_id
-* order_item_id
-* product_id
-* seller_id
-* shipping_limit_date
-* price
-* freight_value
-
----
-
-### **5️⃣Orders Table**
-
-* order_id
-* customer_id
-* order_status
-* order_purchase_timestamp
-* order_delivered_carrier_date
-* order_delivered_customer_date
-* order_estimated_delivery_date
-
----
-
-### **6️⃣Payments Table**
-
-* order_id
-* payment_sequential
-* payment_type
-* payment_installments
-* payment_value
-
----
-
-We are going to build the project by using data from all these tables. By joining these tables using common keys like order_id, customer_id, product_id, and seller_id, we can perform detailed analysis such as sales trends, customer behavior, delivery performance, payment analysis, and product performance.
-
+## Problems:
 
 ### 1. Import the dataset and do usual exploratory analysis steps like checking the structure & characteristics of the dataset:
 
@@ -83,7 +29,7 @@ from `TARGET_SQL.orders`;
 ```
 
 2. **Display the details of Cities & States of customers who ordered during the given period.**:
-### Approach:
+**Approach:**
 In this query, I joined the orders and customers tables on customer_id and applied year and month filters using the EXTRACT function to retrieve the cities and states of customers who placed orders during the first quarter of 2018.
 ```sql
 select 
